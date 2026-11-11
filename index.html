@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vintra Technology</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* Estilos base */
+        body {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s, font-size 0.2s;
+        }
+
+            /* Estilo para Alto Contraste */
+            body.alto-contraste {
+                background-color: #000000 !important;
+                color: #ffff00 !important;
+            }
+
+                body.alto-contraste a {
+                    color: #00ffff !important;
+                }
+
+                body.alto-contraste button {
+                    background-color: #ffff00 !important;
+                    color: #000000 !important;
+                    border: 2px solid #ffffff !important;
+                }
+
+        a {
+            color: #4da6ff;
+        }
+
+        /* Panel de accesibilidad */
+        .panel-accesibilidad {
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #333333;
+            color: #ffffff;
+            border: 1px solid #555555;
+            padding: 8px 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+            button:hover {
+                background-color: #444444;
+            }
+
+        /* Filtros */
+        .filtros {
+            margin: 20px 0;
+        }
+
+        .tarjeta-app {
+            margin-bottom: 25px;
+        }
+
+        footer {
+            margin-top: 40px;
+            color: #cccccc;
+        }
+
+        /* Banner de Cookies */
+        .banner-cookies {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #111111;
+            color: #ffffff;
+            padding: 15px;
+            border-top: 2px solid #4da6ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Panel de Accesibilidad -->
+    <section class="panel-accesibilidad" aria-label="Herramientas de Accesibilidad">
+        <h2>Herramientas de Accesibilidad</h2>
+        <button onclick="cambiarTamano(2)">Aumentar letra (+)</button>
+        <button onclick="cambiarTamano(-2)">Disminuir letra (-)</button>
+        <button onclick="alternarContraste()">Modo Alto Contraste</button>
+        <button onclick="leerPagina()">🔊 Leer página en voz alta</button>
+        <button onclick="detenerVoz()">⏹️ Detener lectura</button>
+    </section>
+
+    <!-- Encabezado Principal -->
+    <header>
+        <h1>Vintra Technology</h1>
+        <p><em>Innovación y soluciones digitales a tu alcance.</em></p>
+        <p>Bienvenido a la plataforma oficial de descargas de Vintra Technology, un espacio para todos.</p>
+    </header>
+
+    <!-- Contenido y Filtros -->
+    <main>
+        <section class="filtros" aria-label="Filtros de catálogo">
+            <h2>Catálogo de Programas</h2>
+            <p>Filtrar por categoría:</p>
+            <button onclick="filtrarApps('todas')">Ver Todos</button>
+            <button onclick="filtrarApps('reproductores')">Reproductores</button>
+        </section>
+
+        <!-- Listado de Aplicaciones -->
+        <section id="lista-descargas">
+            <div class="tarjeta-app reproductores">
+                <h2>Vintra Music Player</h2>
+                <p>Descarga la versión oficial de nuestro ejecutable para Windows.</p>
+                <a href="VintraMusicPlayer.exe">Descargar Vintra Music Player</a>
+            </div>
+
+            <div class="tarjeta-app proximamente">
+                <h2>Próximamente más</h2>
+                <p>Descarga nuestros programas para Windows desde aquí.</p>
+                <a href="#">Próximamente</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de Página con Correo Enlazado a Gmail/App -->
+    <footer>
+        <hr>
+        <h2>Contacto y Legales</h2>
+        <p>Correo de soporte: <a href="mailto:soportevintratechnology@gmail.com?subject=Consulta%20Soporte%20Vintra%20Technology">soportevintratechnology@gmail.com</a></p>
+        <ul>
+            <li><a href="politicas.html">Política de tratamiento de datos</a></li>
+            <li><a href="cookies.html">Política de cookies</a></li>
+            <li><a href="accesibilidad.html">Declaración de accesibilidad</a></li>
+        </ul>
+    </footer>
+
+    <!-- Banner de Cookies -->
+    <aside id="banner-cookies" class="banner-cookies" aria-label="Aviso de privacidad de cookies">
+        <p>Este sitio recopila cookies para mejorar la experiencia de navegación. Consulta nuestra <a href="cookies.html">Política de cookies</a>.</p>
+        <div>
+            <button onclick="aceptarCookies()">Aceptar todas</button>
+            <button onclick="rechazarCookies()">Rechazar</button>
+        </div>
+    </aside>
+
+    <!-- Scripts de interactividad -->
+    <script>
+        // 1. Zoom de Texto
+        let tamanoActual = 16;
+        function cambiarTamano(delta) {
+            tamanoActual += delta;
+            if (tamanoActual < 12) tamanoActual = 12;
+            if (tamanoActual > 26) tamanoActual = 26;
+            document.body.style.fontSize = tamanoActual + 'px';
+        }
+
+        // 2. Modo Alto Contraste
+        function alternarContraste() {
+            document.body.classList.toggle('alto-contraste');
+        }
+
+        // 3. Lectura de la Página en Voz Alta
+        let sintetizador = window.speechSynthesis;
+        function leerPagina() {
+            sintetizador.cancel();
+            let texto = document.querySelector('header').innerText + ". " + document.querySelector('main').innerText;
+            let mensaje = new SpeechSynthesisUtterance(texto);
+            mensaje.lang = 'es-ES';
+            sintetizador.speak(mensaje);
+        }
+
+        function detenerVoz() {
+            sintetizador.cancel();
+        }
+
+        // 4. Filtros de Aplicaciones
+        function filtrarApps(categoria) {
+            let tarjetas = document.querySelectorAll('.tarjeta-app');
+            tarjetas.forEach(tarjeta => {
+                if (categoria === 'todas') {
+                    tarjeta.classList.remove('oculto');
+                } else {
+                    if (tarjeta.classList.contains(categoria)) {
+                        tarjeta.classList.remove('oculto');
+                    } else {
+                        tarjeta.classList.add('oculto');
+                    }
+                }
+            });
+        }
+
+        // 5. Gestión del Banner de Cookies
+        function aceptarCookies() {
+            document.getElementById('banner-cookies').classList.add('oculto');
+        }
+
+        function rechazarCookies() {
+            document.getElementById('banner-cookies').classList.add('oculto');
+        }
+    </script>
+</body>
+</html>
